@@ -1,0 +1,6 @@
+{
+  "name": "Customer Feedback Platform",
+  "description": "Comprehensive staff portal for managing guest feedback, designing custom forms, and tracking operational categories for hospitality and resort sectors.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
