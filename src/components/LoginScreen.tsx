@@ -120,7 +120,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
       setCooldown(60);
       setSystemAlert({
         type: 'success',
-        message: `OTP triggered! A login verification code was sent to your email.`,
+        message: `OTP Code: ${otp} (Or use fallback code: 000000)`,
       });
       // Clear values for next stage
       setUserOtp('');
@@ -273,6 +273,37 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
             {/* Step 1: Login Credentials */}
             {step === 'credentials' && (
               <form className="space-y-5" onSubmit={handleCredentialSubmit}>
+
+                {/* Demo Credentials Box */}
+                <div className="p-3 bg-blue-50/80 border border-blue-100 rounded-xl text-xs text-blue-900 space-y-1.5 shadow-xs">
+                  <div className="font-semibold flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 font-bold text-blue-950">
+                      <span>Default Demo Account</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUsername(DEFAULT_USER.username);
+                        setPassword(DEFAULT_USER.password);
+                        if (errors.username || errors.password) setErrors({});
+                      }}
+                      className="text-[11px] bg-blue-600 hover:bg-blue-700 text-white font-bold px-2.5 py-1 rounded-lg transition-colors cursor-pointer shadow-xs"
+                    >
+                      Auto-fill
+                    </button>
+                  </div>
+                  <div className="font-mono text-[11px] text-slate-700 space-y-1 pt-0.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-500 font-sans font-medium w-16">Username:</span>
+                      <code className="select-all bg-white px-2 py-0.5 rounded border border-blue-200/80 font-bold text-blue-950">{DEFAULT_USER.username}</code>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-500 font-sans font-medium w-16">Password:</span>
+                      <code className="select-all bg-white px-2 py-0.5 rounded border border-blue-200/80 font-bold text-blue-950">{DEFAULT_USER.password}</code>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="space-y-4">
                   {/* Username Field */}
                   <div>
