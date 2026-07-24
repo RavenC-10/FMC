@@ -528,7 +528,7 @@ export default function FeedbackManager({
                             {item.categoryCode}
                           </span>
                         </td>
-                        <td className="py-2 px-2.5 text-slate-600 truncate max-w-[120px]">{item.productName}</td>
+                        <td className="py-2 px-2.5 text-slate-600 truncate max-w-30">{item.productName}</td>
                         <td className="py-2 px-2.5 text-center">
                           <span className="inline-flex items-center gap-0.5 bg-amber-50 text-amber-700 font-bold px-1 py-0.5 rounded text-[10px] border border-amber-100">
                             {item.rating} <Star className="h-2.5 w-2.5 fill-amber-500 text-amber-500" />
@@ -817,7 +817,7 @@ export default function FeedbackManager({
                       return (
                         <div key={log.id} className="relative">
                           {/* Dot */}
-                          <span className="absolute -left-[20.5px] top-1 h-3 w-3 rounded-full bg-white border-2 border-blue-600"></span>
+                          <span className="absolute left-[-20.5px] top-1 h-3 w-3 rounded-full bg-white border-2 border-blue-600"></span>
                           
                           <div className="font-semibold text-slate-800 flex items-center gap-1">
                             <span className="capitalize">{log.fromStatus === 'created' ? 'Created' : log.fromStatus}</span> 

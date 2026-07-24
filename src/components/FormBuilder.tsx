@@ -736,7 +736,7 @@ export default function FormBuilder({ categories, forms, onUpdateForms }: FormBu
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Deadline date selection */}
                   <div>
-                    <label className="block text-slate-600 font-semibold mb-1 flex items-center gap-1 text-[11px]">
+                    <label className="block text-slate-600 font-semibold mb-1 items-center gap-1 text-[11px]">
                       <Calendar className="h-3.5 w-3.5 text-slate-400" /> Active Period Deadline
                     </label>
                     <input
@@ -750,7 +750,7 @@ export default function FormBuilder({ categories, forms, onUpdateForms }: FormBu
 
                   {/* Question numbering selection */}
                   <div>
-                    <label className="block text-slate-600 font-semibold mb-1 flex items-center gap-1 text-[11px]">
+                    <label className="block text-slate-600 font-semibold mb-1 items-center gap-1 text-[11px]">
                       <ListOrdered className="h-3.5 w-3.5 text-slate-400" /> Question Number Index
                     </label>
                     <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-3 h-9 text-[11px] text-slate-800">

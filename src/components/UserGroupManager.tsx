@@ -171,7 +171,7 @@ export default function UserGroupManager({ userGroups, users, onUpdateUserGroups
                     </span>
                   </div>
 
-                  <p className="text-slate-500 leading-normal line-clamp-3 min-h-[50px]">
+                  <p className="text-slate-500 leading-normal line-clamp-3 min-h-12.5">
                     {group.description}
                   </p>
 
@@ -187,14 +187,14 @@ export default function UserGroupManager({ userGroups, users, onUpdateUserGroups
                       {groupUsers.slice(0, 5).map((usr) => (
                         <div
                           key={usr.id}
-                          className="inline-block h-6 w-6 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center font-bold text-[9px] text-slate-700 capitalize"
+                          className="inline-block h-6 w-6 rounded-full bg-slate-100 border-2 border-white items-center justify-center font-bold text-[9px] text-slate-700 capitalize"
                           title={usr.fullName}
                         >
                           {usr.username.charAt(0)}
                         </div>
                       ))}
                       {groupUsers.length > 5 && (
-                        <div className="inline-block h-6 w-6 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center font-bold text-[9px] text-slate-600">
+                        <div className="inline-block h-6 w-6 rounded-full bg-slate-200 border-2 border-white items-center justify-center font-bold text-[9px] text-slate-600">
                           +{groupUsers.length - 5}
                         </div>
                       )}
@@ -275,7 +275,7 @@ export default function UserGroupManager({ userGroups, users, onUpdateUserGroups
                   id="group-code-input"
                   type="text"
                   required
-                  disabled={selectedGroup && ['SUPER_ADMIN', 'MANAGER', 'AGENT', 'VIEWER'].includes(selectedGroup.code)}
+                  disabled={selectedGroup ? ['SUPER_ADMIN', 'MANAGER', 'AGENT', 'VIEWER'].includes(selectedGroup.code) : false}
                   placeholder="e.g. DUTY_MANAGER"
                   className="w-full bg-slate-50 disabled:bg-slate-100 disabled:text-slate-500 border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:bg-white font-mono uppercase"
                   value={code}

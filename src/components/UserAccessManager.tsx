@@ -168,7 +168,7 @@ export default function UserAccessManager({
 
         {/* Matrix Area */}
         <div className="p-5 overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[700px]">
+          <table className="w-full text-left border-collapse min-w-175">
             <thead>
               <tr className="border-b border-slate-150 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
                 <th className="py-3 px-4">System Module</th>

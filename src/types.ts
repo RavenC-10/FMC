@@ -33,6 +33,7 @@ export interface FeedbackItem {
   customerEmail: string;
   customerPhone: string;
   bookingReference?: string;
+  formname: string;
   categoryCode: string; // Associated Category code
   productName: string;
   location: string;

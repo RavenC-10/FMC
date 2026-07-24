@@ -1,20 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Category, FeedbackItem, FormTemplate } from '../types';
 import DynamicIcon from './DynamicIcon';
-import {
-  Plus,
-  Trash2,
-  Edit2,
-  CheckCircle,
-  XCircle,
-  Mail,
-  AlertTriangle,
-  FolderOpen,
-  Tag,
-  Check,
-  X,
-  FileText
-} from 'lucide-react';
+import { Plus, Trash2, Edit2, Mail, Tag, Check, X } from 'lucide-react';
 
 interface CategoryManagerProps {
   categories: Category[];
