@@ -1,37 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  LayoutDashboard,
-  MessageSquare,
-  FileText,
-  FolderKanban,
-  LogOut,
-  Clock,
-  User as UserIcon,
-  ShieldCheck,
-  AlertTriangle,
-  RotateCcw,
-  Volume2,
-  Users,
-  Shield,
-  Fingerprint
-} from 'lucide-react';
+import { LayoutDashboard, MessageSquare, FileText, FolderKanban, LogOut, Clock, Users, Shield, Fingerprint } from 'lucide-react';
 import { Category, FeedbackItem, FormTemplate, User, UserGroup, UserAccessRights, UamAuditLog } from './types';
-import {
-  getStoredCategories,
-  saveStoredCategories,
-  getStoredFeedback,
-  saveStoredFeedback,
-  getStoredForms,
-  saveStoredForms,
-  getStoredUsers,
-  saveStoredUsers,
-  getStoredUserGroups,
-  saveStoredUserGroups,
-  getStoredUamAccess,
-  saveStoredUamAccess,
-  getStoredUamLogs,
-  saveStoredUamLogs
-} from './initialData';
+import { getStoredCategories, saveStoredCategories, getStoredFeedback, saveStoredFeedback, getStoredForms, saveStoredForms, getStoredUsers, saveStoredUsers, getStoredUserGroups, saveStoredUserGroups, getStoredUamAccess, saveStoredUamAccess, getStoredUamLogs, saveStoredUamLogs } from './initialData';
 
 // Component imports
 import LoginScreen from './components/LoginScreen';
@@ -69,17 +39,10 @@ export default function App() {
 
   // Selection cross-linking (Dashboard to Feedback Manager)
   const [activeTicketId, setActiveTicketId] = useState<string | null>(null);
-
-  // Inactivity session timeout state (5 minutes total, warning modal at 4m 30s)
-  const [idleTime, setIdleTime] = useState(0);
-  const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
-  const [warningCountdown, setWarningCountdown] = useState(30);
-
-  // UTC and Local time state
+  
   const [currentTime, setCurrentTime] = useState(new Date());
 
   // Refs for tracking timers
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const clockTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize data on mount
@@ -112,74 +75,12 @@ export default function App() {
     };
   }, []);
 
-  // Inactivity timer logic (tracks idle counts in seconds)
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setIdleTime(0);
-      setShowTimeoutWarning(false);
-      return;
-    }
-
-    const resetIdleTimer = () => {
-      setIdleTime(0);
-      setShowTimeoutWarning(false);
-    };
-
-    // Listen to standard interactive events to detect user activity
-    window.addEventListener('mousemove', resetIdleTimer);
-    window.addEventListener('mousedown', resetIdleTimer);
-    window.addEventListener('keydown', resetIdleTimer);
-    window.addEventListener('scroll', resetIdleTimer);
-    window.addEventListener('touchstart', resetIdleTimer);
-
-    // Increment idle counter every second
-    idleTimerRef.current = setInterval(() => {
-      setIdleTime((prev) => {
-        const nextTime = prev + 1;
-        
-        // At 4 minutes 30 seconds (270 seconds), trigger warning dialog
-        if (nextTime === 270) {
-          setShowTimeoutWarning(true);
-          setWarningCountdown(30);
-        }
-        
-        // At 5 minutes (300 seconds), log the user out
-        if (nextTime >= 300) {
-          handleLogout();
-        }
-
-        return nextTime;
-      });
-    }, 1000);
-
-    return () => {
-      window.removeEventListener('mousemove', resetIdleTimer);
-      window.removeEventListener('mousedown', resetIdleTimer);
-      window.removeEventListener('keydown', resetIdleTimer);
-      window.removeEventListener('scroll', resetIdleTimer);
-      window.removeEventListener('touchstart', resetIdleTimer);
-      if (idleTimerRef.current) clearInterval(idleTimerRef.current);
-    };
-  }, [isAuthenticated]);
-
-  // Handle countdown on the warning modal
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (showTimeoutWarning && warningCountdown > 0) {
-      timer = setTimeout(() => {
-        setWarningCountdown((prev) => prev - 1);
-      }, 1000);
-    }
-    return () => clearTimeout(timer);
-  }, [showTimeoutWarning, warningCountdown]);
-
   // Auth helper callbacks
   const handleLoginSuccess = (usr: string) => {
     setIsAuthenticated(true);
     setUsername(usr);
     localStorage.setItem('feedback_mgt_auth', 'true');
     localStorage.setItem('feedback_mgt_user', usr);
-    setIdleTime(0);
   };
 
   const handleLogout = () => {
@@ -188,13 +89,6 @@ export default function App() {
     localStorage.removeItem('feedback_mgt_auth');
     localStorage.removeItem('feedback_mgt_user');
     setActiveTab('dashboard');
-    setShowTimeoutWarning(false);
-    setIdleTime(0);
-  };
-
-  const handleExtendSession = () => {
-    setIdleTime(0);
-    setShowTimeoutWarning(false);
   };
 
   // State modification wrappers synced to local storage
@@ -250,15 +144,6 @@ export default function App() {
       localStorage.clear();
       window.location.reload();
     }
-  };
-
-  // format idle display
-  const formatIdleTime = () => {
-    const totalRemaining = 300 - idleTime;
-    if (totalRemaining <= 0) return '0:00';
-    const mins = Math.floor(totalRemaining / 60);
-    const secs = totalRemaining % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   // Render Login state
@@ -493,48 +378,6 @@ export default function App() {
           </div>
         </main>
       </div>
-
-      {/* ------------------ SESSION TIMEOUT WARNING MODAL ------------------ */}
-      {showTimeoutWarning && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-999 flex items-center justify-center p-4 select-none">
-          <div className="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-6 max-w-md w-full space-y-5 text-center animate-scaleIn">
-            <div className="flex justify-center">
-              <AlertTriangle className="h-12 w-12 text-red-600 animate-bounce" />
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="font-bold text-slate-900 text-lg">Inactivity Auto-Logout Security Alert</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                You have been inactive for over 4 minutes and 30 seconds. To comply with resort data compliance regulations, your session will be locked automatically.
-              </p>
-            </div>
-
-            <div className="inline-flex flex-col items-center justify-center bg-red-50 border border-red-100 rounded-xl px-4 py-3 w-full font-mono">
-              <span className="text-[10px] text-red-600 uppercase tracking-widest font-bold mb-1">Logging out in</span>
-              <span className="text-2xl font-extrabold text-red-700">{warningCountdown} SECONDS</span>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                id="btn-extend-session"
-                type="button"
-                onClick={handleExtendSession}
-                className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md transition-colors cursor-pointer"
-              >
-                Extend Session Activity
-              </button>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="px-4 py-2.5 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-50"
-              >
-                Lock Session Now
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
     </div>
   );
 }
